@@ -1,0 +1,39 @@
+# Original/proprietary MDK corpus — never commit
+source/
+corpus/
+original/
+game_data/
+*.EXE
+*.exe
+*.DLL
+*.dll
+*.ISO
+*.iso
+*.GOG
+*.gog
+*.DAT
+*.dat
+
+# Derived/local reverse-engineering output
+work/
+workspace/
+cache/
+.cache/
+artifacts/
+renders/
+dumps/
+*.bin
+*.dump
+*.tmp
+*.log
+
+# Local Python/editor state
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.venv/
+venv/
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
