@@ -16,4 +16,22 @@ OpenRemaster reconstruction project for **MDK (1997)**.
 
 `OpenMDK1-001 — First Authentic Scene`.
 
-The repository starts intentionally small. Add decoders, IR, runtime reconstruction, tests, and evidence only as they are justified by the authoritative corpus.
+## Current recovered renderer evidence
+
+The durable BF08 winding/culling checkpoint has now been mirrored into GitHub from the persistent Drive artifact `OpenMDK1_BF08_WindingGate_LOCAL.zip`.
+
+Current evidence boundary:
+
+- CPU reference renderer culling A/B test completed.
+- In the HMO2 candidate view, `keep_back` is much closer to the no-cull reference than `keep_front`.
+- Corpus cross-check across nine normal HMOs shows the opposite-to-current-math-front orientation dominates interior candidate views in 9/9 samples.
+- This supports the current runtime-facing winding candidate as **STRUCTURAL**, not VERIFIED.
+- Exact original cull state, camera/FOV, GLASS blend/Z-write, MIRRLOW behavior and pixel parity remain open.
+
+See:
+
+- `evidence/BF08ed_culling_AB_audit.json`
+- `evidence/BF08ee_corpus_winding_crosscheck.json`
+- `evidence/BF08ef_winding_gate_receipt.json`
+
+The next step remains an authentic first-scene reconstruction with original-runtime comparison, not broader speculative format expansion.
