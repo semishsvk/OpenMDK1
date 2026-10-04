@@ -1,0 +1,23 @@
+{
+  "checkpoint": "BF08ef",
+  "state": "PASS_LOCAL_RECOVERABLE",
+  "baseline": "BF08ec CPU reference renderer smoke",
+  "finding": {
+    "HMO2_AB": {
+      "no_cull_coverage": 0.42648111979166664,
+      "keep_front_coverage": 0.06666666666666667,
+      "keep_back_coverage": 0.45188802083333335
+    },
+    "corpus_crosscheck": "opposite-to-current-math-front orientation dominates interior candidate views in 9/9 normal HMOs",
+    "classification": "STRUCTURAL",
+    "renderer_action": "retain explicit winding convention switch; candidate runtime-facing convention = current keep_back"
+  },
+  "not_promoted": [
+    "exact original cull state",
+    "camera/FOV",
+    "GLASS blend/Z-write",
+    "MIRRLOW",
+    "pixel parity"
+  ],
+  "persistence": "DURABLE_GOOGLE_DRIVE_ARTIFACT_OPENMDK1_BF08_WindingGate_LOCAL"
+}
