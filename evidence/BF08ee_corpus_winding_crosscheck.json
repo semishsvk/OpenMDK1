@@ -1,0 +1,14 @@
+{
+  "checkpoint": "BF08ee",
+  "hmos": {
+    "1": {"position":[31.69999999999999,118.0,197.1],"direction":[0.0,1.0,0.0],"inside":276,"front":72,"back":204,"back_ratio":0.7391304347826086},
+    "2": {"position":[-1.5,1083.4,118.0],"direction":[0.0,-1.0,0.0],"inside":350,"front":117,"back":233,"back_ratio":0.6657142857142857},
+    "3": {"position":[-51.0,1372.0,-939.5],"direction":[-1.0,0.0,0.0],"inside":749,"front":357,"back":392,"back_ratio":0.5233644859813084},
+    "4": {"position":[-48.0,1441.4,-446.5],"direction":[0.0,1.0,0.0],"inside":484,"front":121,"back":363,"back_ratio":0.75},
+    "5": {"position":[-192.5,1871.0,-435.8],"direction":[0.0,1.0,0.0],"inside":605,"front":171,"back":434,"back_ratio":0.7173553719008264},
+    "6": {"position":[118.79999999999998,2281.0,-422.75],"direction":[1.0,0.0,0.0],"inside":236,"front":72,"back":164,"back_ratio":0.6949152542372882},
+    "8": {"position":[363.9,2788.6,-251.65],"direction":[0.0,-1.0,0.0],"inside":980,"front":364,"back":616,"back_ratio":0.6285714285714286},
+    "9": {"position":[-175.0,2623.6,-266.15],"direction":[0.0,1.0,0.0],"inside":767,"front":194,"back":573,"back_ratio":0.7470664928292047},
+    "10":{"position":[-165.5,3186.2,-229.05],"direction":[0.0,1.0,0.0],"inside":248,"front":22,"back":226,"back_ratio":0.9112903225806451}
+  }
+}
