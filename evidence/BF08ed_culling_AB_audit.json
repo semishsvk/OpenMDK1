@@ -1,0 +1,37 @@
+{
+  "checkpoint": "BF08ed",
+  "camera": {
+    "position": [-1.5, 1106.3, 118.0],
+    "direction": [0.0, -1.0, 0.0],
+    "fov_h_deg": 75
+  },
+  "results": {
+    "no_cull": {
+      "submitted": 492,
+      "culled": 0,
+      "rasterized_triangles": 286,
+      "nonblack_pixels": 131015,
+      "coverage": 0.42648111979166664,
+      "sha256": "85acc7b1c59b5cd9e648fb8a23b45bf1c01f318a76245d65343811060fccb8ba"
+    },
+    "keep_front": {
+      "submitted": 492,
+      "culled": 336,
+      "rasterized_triangles": 113,
+      "nonblack_pixels": 20480,
+      "coverage": 0.06666666666666667,
+      "sha256": "6cdc81b075acbf2d5ecec4a0ad1abae3c1628a1857cd5b2ba857329c099a7d68"
+    },
+    "keep_back": {
+      "submitted": 492,
+      "culled": 156,
+      "rasterized_triangles": 230,
+      "nonblack_pixels": 138820,
+      "coverage": 0.45188802083333335,
+      "sha256": "da3a0736fed6faa12183e6877c523e6277cde8308c14f59b09bdabf161b5eae5"
+    },
+    "diff_no_cull_keep_front": {"different_pixels": 146017},
+    "diff_no_cull_keep_back": {"different_pixels": 7805},
+    "diff_keep_front_keep_back": {"different_pixels": 153822}
+  }
+}
