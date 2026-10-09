@@ -1,0 +1,12 @@
+import json,pathlib
+q=pathlib.Path(r"F:\Remaster Framework\work\OpenMDK1\evidence\triangle_f3_mti_crosswalk_v1.json")
+raw=q.read_bytes(); t=raw.decode("utf-16") if raw.startswith(b"\xff\xfe") else raw.decode("utf-8")
+d=json.loads(t)
+print("mapped ratio",d["negative_f3_mapping_ratio"],d["negative_f3_mapped_triangles"],"/",d["negative_f3_triangles"])
+print("mapped codes")
+for k,v in d["mapped_codes"].items(): print(k,v)
+print("unmapped",d["unmapped_codes"])
+print("positive",d["positive_f3"])
+print("zero",d["zero_f3_triangles"])
+print("special")
+for r in d["special_mti_records"]: print(r)
