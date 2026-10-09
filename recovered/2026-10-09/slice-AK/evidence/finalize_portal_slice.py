@@ -1,0 +1,28 @@
+import pathlib,json,hashlib,datetime,shutil,struct
+root=pathlib.Path(r'F:\Remaster Framework\work\OpenMDK1-HMO1-Slice-BF11AI-20261006');ev=root/'evidence';baseline=pathlib.Path(r'F:\Remaster Framework\work\OpenMDK1-HMO1-Slice-BF11AH-20261006')
+a=json.loads((ev/'portal_final1'/'smoke.json').read_text());b=json.loads((ev/'portal_final2'/'smoke.json').read_text());survey=json.loads((ev/'survey_final'/'smoke.json').read_text());old=json.loads((baseline/'evidence'/'run1'/'smoke.json').read_text())
+assert a['status']==b['status']==survey['status']=='PASS' and a['trace']==b['trace'] and a['pending_target']==10
+assert a['portal']['cases']==744 and a['portal']['mismatches']==0 and a['collision']['mismatches']==0
+repeat=json.loads((ev/'survey_repeat'/'smoke.json').read_text())
+assert repeat['status']=='PASS' and repeat['trace']==survey['trace']
+movies=[]
+for name in ['survey_playthrough.avi','portal_crossing_final.avi']:
+ p=ev/name
+ with p.open('rb') as f:header=f.read(4096)
+ assert header[:4]==b'RIFF' and header[8:12]==b'AVI '
+ pos=header.index(b'avih');values=struct.unpack_from('<14I',header,pos+8);assert values[4]==360 and values[8:10]==(1280,720)
+ movies.append(dict(path=str(p),frames=values[4],size=[values[8],values[9]],microseconds_per_frame=values[0],duration_seconds=6,sha256=hashlib.sha256(p.read_bytes()).hexdigest()))
+for n in ['slice_AI_export.log','slice_AI_export.err','slice_AI_survey_final.log','slice_AI_survey_final.err','slice_AI_portal_final1.log','slice_AI_portal_final1.err','slice_AI_portal_final2.log','slice_AI_portal_final2.err','repair_portal_feedback.py','repair_portal_encoding.py','prepare_portal_slice.py','finalize_portal_slice.py']:
+ shutil.copyfile(n,ev/n)
+files=[root/'README.md']
+for sub in ['project','build','evidence/survey_final','evidence/survey_repeat','evidence/portal_final1','evidence/portal_final2']:
+ files.extend(p for p in (root/sub).rglob('*') if p.is_file() and '.godot' not in p.parts)
+files.extend(p for p in ev.glob('*') if p.is_file() and p.name!='portal_crossing.avi')
+hashes={p.relative_to(root).as_posix():hashlib.sha256(p.read_bytes()).hexdigest() for p in sorted(set(files))}
+portal=json.loads(pathlib.Path('portal_segment_receipt.json').read_text())
+c=dict(checkpoint='OpenMDK1-BF11AI-SOURCE-PORTAL-DETECTOR-AND-RECORDED-PLAYTHROUGH',timestamp_utc=datetime.datetime.now(datetime.timezone.utc).isoformat(),status='OBJECT0_PORTAL_PREDICATE_X86_VALIDATED_EXPORTED_EXPERIMENTAL_SLICE_GPU_SMOKE_AND_MOVIE_PASS',baseline_preserved=str(baseline),release_path=str(root),executable_sha256=hashes['build/OpenMDK-HMO1-Experimental.exe'],original_portal={'routine':portal['routine'],'abi':portal['abi'],'source_raw_offset':'0x2C8','source_id':1000,'resolved_target_index':10,'resolved_target_name':'CHMO_1','plane_y':654,'x_range':[-19,17],'z_range':[99,126],'height_margin':-5,'x86_cases':744,'x86_hit_cases':185,'mismatches':0,'source_callsite':portal['source_activation_callsite'],'semantics':'Checks end-point in/cross bounds rather than interpolated rectangle intersection; only flag3/object0 port is implemented.'},slice_delta=['Original object0 portal predicate ported to portal.gd and checked against all744 x86 cases in build','P experimental teleport to (0,652,115), W crossing records target10','Movement stops at pending CHMO_1 activation gate with explicit MISSING feedback; no fake level transition','Two6-second 60FPS AVI files recorded directly by Godot MovieWriter from the final exported executable'],validation={'survey':'PASS, two fixed-60FPS traces identical. BF11AH wall-clock trace differs due input event scheduling; cross-timebase identity is not claimed.','two_portal_replays':'PASS, traces identical','collision_cases':300,'collision_mismatches':0,'portal_cases':744,'portal_mismatches':0,'target':10,'renderer':a['renderer'],'input':'Synthetic key events through same runtime handler; normal keyboard/mouse supported','movie_header_verified':movies,'portal_visual_gate_checked':'frame090 inspected; missing activation message visible; view beyond unloaded target is background.'},implemented=['Canonical source portal selection predicate','Input-accessible portal diagnostic approach','Source-backed target detection, explicit activation gate','Survey baseline, original assets/material palette retained','Movie and PNG evidence from final export'],partial=['P teleport/camera/gate UI experimental','Portal predicate only actual object0 flag3; other flags not implemented','Current active object remains0 until full CHMO_1 activation is reconstructed'],missing=['CHMO_1 source resources/templates and full 0x41A11C activation','Retail camera/physics/startup/save/CRT closure','Retail framebuffer/fidelity oracle','Token-native RenderIR fidelity and combat/audio'],sha256=hashes,next_gate='Reconstruct CHMO_1 resources and entity-template table, then original 0x41A11C activation and script effects. Keep pending portal gate explicit until supported. Retail save and BF12 not marked complete.')
+n='OpenMDK1_BF11AI_source_portal_recorded_slice.json';cp=pathlib.Path(r'F:\Remaster Framework\OpenMDK\checkpoints')/n;assert not cp.exists();data=(json.dumps(c,indent=2)+'\n').encode();cp.write_bytes(data);h=hashlib.sha256(data).hexdigest();cp.with_name(n+'.sha256').write_text(h+'  '+n+'\n');(ev/'delivery.json').write_bytes(data);(root/'SHA256SUMS.txt').write_text(''.join(v+'  '+k+'\n' for k,v in hashes.items()))
+for k,v in hashes.items():assert hashlib.sha256((root/k).read_bytes()).hexdigest()==v
+assert hashlib.sha256(cp.read_bytes()).hexdigest()==h
+print('EXE',c['executable_sha256']);print('CHECKPOINT',h,'PERSISTENCE_READBACK_PASS');print('MOVIES',[(x['frames'],x['size']) for x in movies])
+
