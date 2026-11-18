@@ -39,5 +39,6 @@ The next step remains an authentic first-scene reconstruction with original-runt
 ## Experimental HMO1 textures
 
 The [HMO1 texture experiment](experiments/level3-enhanced-textures/README.md)
-adds a reversible 4× texture mode to the recovered BF11AK scene. Its staging
+adds a reversible 4× texture mode, gate lighting and an optional spatial
+door-impact audition to the recovered BF11AK scene. Its staging
 command builds the private project from the owner's decoded assets.

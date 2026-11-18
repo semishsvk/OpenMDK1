@@ -9,6 +9,8 @@ from tempfile import TemporaryDirectory
 
 from PIL import Image, __version__ as pillow_version
 
+from prepare_door import prepare_door
+
 HERE = Path(__file__).resolve().parent
 REPO = HERE.parents[1]
 BASE = REPO / "recovered/2026-10-09/slice-AK/project"
@@ -32,11 +34,13 @@ def upscale_tile(image):
                           box=(pad, pad, pad + width, pad + height))
 
 
-def prepare(source, output):
+def prepare(source, output, asset_import=None):
     source = source.resolve(strict=True)
     output = output.resolve()
     if output.exists() or output.is_relative_to(source) or output.is_relative_to(REPO):
         raise ValueError("Choose a new private directory outside the input and checkout.")
+    if asset_import is not None and output.is_relative_to(asset_import.resolve(strict=True)):
+        raise ValueError("Choose an output outside the private asset import.")
     pins = json.loads((HERE / "inputs.json").read_text())
     output.parent.mkdir(parents=True, exist_ok=True)
     with TemporaryDirectory(dir=output.parent, prefix=".openmdk-textures-") as temporary:
@@ -67,7 +71,9 @@ def prepare(source, output):
                 '[params]\ncompress/mode=0\nmipmaps/generate=true\ndetect_3d/compress_to=0\n')
         for name in ("main.gd", "collision.gd", "portal.gd", "activation.gd"):
             shutil.copyfile(BASE / name, stage / name)
-        for name in ("project.godot", "main.tscn", "enhanced_slice.gd", "gate_lamps.gdshader"):
+        if asset_import is not None:
+            prepare_door(asset_import, stage)
+        for name in ("door_preview.gd", "project.godot", "main.tscn", "enhanced_slice.gd", "gate_lamps.gdshader"):
             shutil.copyfile(HERE / name, stage / name)
         manifest = {"recipe": "periodic-lanczos-4x", "pillow": pillow_version, "textures": enhanced}
         (stage / "enhanced/manifest.json").write_text(json.dumps(manifest, indent=2) + "\n")
@@ -89,6 +95,7 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("source", type=Path, help="Private BF11AK project with hmo1.json and textures/")
     parser.add_argument("output", type=Path, help="New private Godot project directory")
+    parser.add_argument("--asset-import", type=Path, help="Private asset import root for optional HMO1 door audio and animation")
     args = parser.parse_args()
-    textures = prepare(args.source, args.output)
+    textures = prepare(args.source, args.output, args.asset_import)
     print(f"Prepared {len(textures)} 4x textures in {args.output}")

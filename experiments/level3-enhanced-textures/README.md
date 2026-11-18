@@ -25,6 +25,55 @@ scripts from `recovered/2026-10-09/slice-AK/project`, and writes a separate Godo
 project. Keep generated PNGs, private runtime assets and captures outside Git.
 Each enhanced PNG has input and output hashes in `enhanced/manifest.json`.
 
+## Spatial door impact preview
+
+**F5** in Enhanced replays the HMO1 entrance panel and its two impacts at the
+door. Turn or move during playback to hear the position change. F5 restarts
+the sequence. F3 hides the panel and stops its sound. The original door script
+checks both keys before this animation. F5 auditions the post-unlock sequence
+independently of the gameplay portal.
+
+Stage the optional inputs from the existing November 14 asset import. On
+HomePC this is `F:\Remaster Framework\output\projects\OpenMDK1\reports\20261114-ASSET-PAYLOAD-IMPORT-r1`.
+The texture-only staging command above still works.
+
+```sh
+python experiments/level3-enhanced-textures/prepare.py "/path/to/BF11AK/project" "/path/to/private/HMO1-audio" --asset-import "/path/to/20261114-ASSET-PAYLOAD-IMPORT-r1"
+godot --headless --editor --path "/path/to/private/HMO1-audio" --import
+godot --path "/path/to/private/HMO1-audio" -- --door-preview
+```
+
+| Source | Observation |
+| --- | --- |
+| LEVEL3.CMI, PC 2690 | HMO_1 spawns XH1_DOOR at (0, 632, 104). The door initializer at 6729 sets yaw to −90°. The audition uses the actor origin for spatial audio. |
+| LEVEL3.CMI, PC 6877 | Starts the door animation. PCs 6926 and 6946 name DOORLAND after waits for animation frames 60 and 74. |
+| LEVEL3O.MTO, HMO_1 | The model and animation track match by name and all 12 base vertices. The private import supplies 86 poses and 20 faces. The panel hits the floor, rebounds and settles. |
+| LEVEL3O.MTO, bytes 874754–895051 inclusive | Contains the 20,298-byte DOORLAND RIFF. The import and engine checks preserve all 20,254 original mono PCM samples at 22,050 Hz. |
+
+At the structural import's nominal 30 fps, the second impact begins 10,290
+source samples after the first. The audition mixes the two overlapping voices
+in one 16-bit PCM stream, with half-scale samples and compensating gain. This
+keeps their spacing independent of the audio block size. The camera listener
+continues to control panning and distance. Original executable trigger timing
+and retail mixer behaviour still require an original runtime capture.
+
+### Audio checks
+
+Use Godot Movie Maker with a display and new output paths. The second command
+measures the recorded stereo mix using FFmpeg, NumPy and SciPy.
+
+```sh
+godot --path "/path/to/private/HMO1-audio" --fixed-fps 60 --write-movie "/path/to/private/check.avi" --script "/path/to/checkout/experiments/level3-enhanced-textures/verify_door.gd" > "/path/to/private/check.log"
+python experiments/level3-enhanced-textures/score_door_audio.py "/path/to/private/check.avi" "/path/to/private/check.log" "/path/to/private/HMO1-audio/door/doorland.wav"
+```
+
+At 48 kHz the waveform check found both onsets exactly 22,400 samples apart
+in all four views (466.67 ms). With the door to the left, centred and to the
+right, the left-minus-right RMS levels were +3.87, 0.00 and −3.87 dB. Moving
+the centred camera back by 90 world units reduced the impact by 9.39 dB RMS.
+Peak level was −5.72 dBFS. The 360-tick portal reports were identical with
+Original, Enhanced, and the door audition running alongside the traversal.
+
 ## Art and runtime scope
 
 All 11 textured surface groups used in HMO1 are covered (192 of 394 triangles).
@@ -111,5 +160,5 @@ and Pillow installed.
 | --- | --- | --- |
 | 1 | Profile the selected 16× sampler on the target Windows GPU. | Record frame times and texture memory on the same route at 1080p and 4K. |
 | 2 | Test the gate lighting through the scope and try a soft contact shadow beneath Kurt. | Check the lettering and match shadow position to floor contact during landing. |
-| 3 | Give the original mono door, machinery and impact samples positional emitters at confirmed source locations. Keep the music on its stereo bus. | Approach, turn away and cross the gate. Compare left/right localization and the trigger tick with the original event trace. |
+| 3 | Verify natural door timing after the two key hits, then bind other machinery and impacts at confirmed source locations. | Approach, turn away and cross the gate. Compare left/right localization and the trigger tick with the original event trace. |
 | 4 | Blend a short metallic reverb at the interior threshold and offer a reduced-dynamics headphone mix. | Check the transition in both directions, peaks on overlapping effects and audibility of the quietest cue under music. |
