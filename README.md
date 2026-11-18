@@ -35,3 +35,9 @@ See:
 - `evidence/BF08ef_winding_gate_receipt.json`
 
 The next step remains an authentic first-scene reconstruction with original-runtime comparison, not broader speculative format expansion.
+
+## Experimental HMO1 textures
+
+The [HMO1 texture experiment](experiments/level3-enhanced-textures/README.md)
+adds a reversible 4× texture mode to the recovered BF11AK scene. Its staging
+command builds the private project from the owner's decoded assets.

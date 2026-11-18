@@ -1,0 +1,16 @@
+{
+  "hmo1.json": "1440b13fe7df5d73f70c13ec2d64257227de9b4b1b4c9a44069477a4fea6734c",
+  "palette.json": "174d5ea150235426955ad19f97dd53f2ed9054f7ee9c8822b6d4877ba4811203",
+  "KURT_FALL3D_structural.obj": "532e055850b2075e4e4ecd2425a18059bea522bc1fa75442d7a14b9028ad5a65",
+  "textures/H1_BLD0.png": "332e6374ee69bed5785d2c03d7639692128ee6181141aaf8d11359bcd4305242",
+  "textures/H1_BLD1.png": "92996ce84e086d78babd997125bd4743436e637434cbb2b41aa966cfa316a456",
+  "textures/H1_BLD2.png": "31949790e20ea3110fb117dd2ad2598299019f514c45fe5687371c1e11d3f80a",
+  "textures/H1_EDGE1.png": "9f3939a18869a1f13f8e2ef30930751658b4de62eeb8a29019f601c4b77a58e3",
+  "textures/H1_EDGE2.png": "daee73c9d6fff3f8788f15386d83ef0f7cad3dda01427db50aeaed7324ba9efc",
+  "textures/H1_FLR.png": "27b1ca66d15b12f25deb9a725730c4d7960fbd18c51c6170a3cd85b95371b08e",
+  "textures/H1_FLRD.png": "2894d0efe5d2ee16feae9d54daf56ac0a398ceeed3181a9b8f6ed2364573832c",
+  "textures/H1_FLRD2.png": "8d4fdca8d90784adbbb1eff3091e51962fd7d8632c67dac17d90ba8942303df5",
+  "textures/H1_FRONT.png": "638ef2ecb9eda65317491df42a37664c001fc0acb0f9f36cedf88741a7b1d6c1",
+  "textures/H1_GATE.png": "faf38c2c7b09e230a61e4d178d8443a2579cf78bf105e575ccecc0763723f9ca",
+  "textures/H1_START.png": "32b7e06c3279f244bf509ead58273bdc2770920daa0bfacaa95bf15178aa6ac0"
+}
