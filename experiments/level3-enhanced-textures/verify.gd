@@ -15,9 +15,9 @@ func check(ok: bool, message: String) -> void:
 		push_error(message)
 
 
-func press_f3(echo: bool = false) -> void:
+func press_key(key: Key, echo: bool = false) -> void:
 	var event := InputEventKey.new()
-	event.keycode = KEY_F3
+	event.keycode = key
 	event.pressed = true
 	event.echo = echo
 	root.push_input(event)
@@ -64,9 +64,11 @@ func verify() -> void:
 	check(reference.get_data() == original.get_data(), "Baseline and Original pixels")
 	var initial_pose: Vector3 = scene.pose
 	var input_count: int = scene.input_events
-	press_f3()
+	press_key(KEY_F4)
+	check(not scene.gate_lamps_enabled and scene.input_events == input_count, "F4 in Original")
+	press_key(KEY_F3)
 	check(scene.enhanced_enabled, "F3 enables Enhanced")
-	press_f3(true)
+	press_key(KEY_F3, true)
 	check(scene.enhanced_enabled, "Key repeat leaves mode selected")
 	for i in scene.surfaces.size():
 		var material: StandardMaterial3D = scene.surfaces[i]
@@ -75,7 +77,7 @@ func verify() -> void:
 		check(material.texture_repeat, "UV repeat")
 	var enhanced := await frame("enhanced")
 	check(original.get_data() != enhanced.get_data(), "Enhanced changes rendered pixels")
-	press_f3()
+	press_key(KEY_F3)
 	check(not scene.enhanced_enabled, "F3 restores Original")
 	for i in scene.surfaces.size():
 		check(scene.surfaces[i].albedo_texture == scene.original_textures[i], "Original albedo")
@@ -89,11 +91,26 @@ func verify() -> void:
 	scene.pitch = 4.0
 	scene.update_camera()
 	var gate := await frame("gate_original")
-	press_f3()
+	press_key(KEY_F3)
 	var gate_enhanced := await frame("gate_enhanced")
 	check(gate.get_data() != gate_enhanced.get_data(), "Enhanced changes the gate view")
-	press_f3()
+	check(not scene.gate_lamps_enabled, "Lamps are opt-in")
+	press_key(KEY_F4)
+	press_key(KEY_F4, true)
+	check(scene.gate_lamps_enabled, "F4 enables lights and ignores key repeat")
+	check(scene.facade_material.next_pass == scene.lamp_pass, "Lamps bound to the facade")
+	var lit := await frame("gate_lit")
+	check(lit.get_data() != gate_enhanced.get_data(), "Gate lamps draw")
+	press_key(KEY_F4)
+	var unlit := await frame("gate_unlit")
+	check(unlit.get_data() == gate_enhanced.get_data(), "F4 restores the unlit frame")
+	press_key(KEY_F4)
+	press_key(KEY_F3)
 	var gate_restored := await frame("gate_restored")
-	check(gate.get_data() == gate_restored.get_data(), "Restored gate pixels")
+	check(gate.get_data() == gate_restored.get_data(), "F3 restores Original with lamps selected")
+	check(scene.facade_material.next_pass == scene.original_facade_pass, "Original render pass")
+	press_key(KEY_F3)
+	var lit_again := await frame("gate_lit_again")
+	check(lit_again.get_data() == lit.get_data(), "Returning to Enhanced restores the selected lamps")
 	print("HMO1_TEXTURE_QA ", JSON.stringify({"surfaces": scene.surfaces.size(), "failures": failures}))
 	quit(0 if failures.is_empty() else 1)

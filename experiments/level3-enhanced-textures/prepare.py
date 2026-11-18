@@ -67,7 +67,7 @@ def prepare(source, output):
                 '[params]\ncompress/mode=0\nmipmaps/generate=true\ndetect_3d/compress_to=0\n')
         for name in ("main.gd", "collision.gd", "portal.gd", "activation.gd"):
             shutil.copyfile(BASE / name, stage / name)
-        for name in ("project.godot", "main.tscn", "enhanced_slice.gd"):
+        for name in ("project.godot", "main.tscn", "enhanced_slice.gd", "gate_lamps.gdshader"):
             shutil.copyfile(HERE / name, stage / name)
         manifest = {"recipe": "periodic-lanczos-4x", "pillow": pillow_version, "textures": enhanced}
         (stage / "enhanced/manifest.json").write_text(json.dumps(manifest, indent=2) + "\n")
